@@ -117,5 +117,29 @@ for n in range(nepisodes + 1):
 
     a = explore_exploit(x, y, Q)
 
-    while (True):
+    while True:
         x1, y1, state = move(x, y, Q)
+
+        if state == 1:
+            reward = reward_destination
+            Qs1a1 = 0.0
+            Q = bellman(x, y, a, reward, Qs1a1, Q)
+            break
+        elif state == 2:
+            reward = reward_cliff
+            Qs1a1 = 0.0
+            Q = bellman(x, y, a, reward, Qs1a1, Q)
+            break
+        elif state == 0:
+            reward = reward_normal
+
+            a1 = explore_exploit(x, y, Q)
+            if x1 == 0 and y1 == nrows:
+                Qs1a1 = 0.0
+            else:
+                Qs1a1 = Q[y1, x1, a1]
+
+            Q = bellman(x, y, a, reward, Qs1a1, Q)
+            x = x1
+            y = y1
+            a = a1
