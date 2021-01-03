@@ -143,3 +143,37 @@ for n in range(nepisodes + 1):
             x = x1
             y = y1
             a = a1
+
+for i in range(nact):
+    plt.subplot(nact, 1, i + 1)
+    plt.imshow(Q[:, :, i])
+    plt.axis('off')
+    plt.colorbar()
+    if i == 0:
+        plt.title('Q-north')
+    elif i == 1:
+        plt.title('Q-east')
+    elif i == 2:
+        plt.title('Q-south')
+    elif i == 3:
+        plt.title('Q-west')
+    plt.savefig('Q_sarsa.png')
+    plt.clf()
+    plt.close()
+
+path = np.zeros((nrows, ncols, nact), dtype=np.float)
+x, y = go_to_start()
+while True:
+    a = exploit(x, y, Q)
+    print(x, y, a)
+    x1, y1, state = move(x, y, a)
+    if state == 1 or state == 1:
+        print("breaking ", state)
+        break
+    elif state == 0:
+        x = x1
+        y = y1
+        if x >= 0 and x <= ncols - 1 and y > -0 and y < nrows - 1:
+            path[x, y] = 100.0
+    plt.imshow(path)
+    plt.savefig('path_sarsa.png')
