@@ -32,7 +32,7 @@ def random_action():
 def move(x, y, a):
     state = 0
 
-    if x == 0 and y == nrows and a == 0:
+    if (x == 0) and (y == nrows) and (a == 0):
         x1 = x
         y1 = y - 1
         return x1, y1, state
@@ -93,6 +93,7 @@ def bellman(x, y, a, reward, Qs1a1, Q):
         return Q
 
     Q[y, x, a] = Q[y, x, a] + alpha * (reward + gamma * Qs1a1 - Q[y, x, a])
+    return Q
 
 
 def explore_exploit(x, y, Q):
@@ -118,7 +119,7 @@ for n in range(nepisodes + 1):
     a = explore_exploit(x, y, Q)
 
     while True:
-        x1, y1, state = move(x, y, Q)
+        x1, y1, state = move(x, y, a)
 
         if state == 1:
             reward = reward_destination
@@ -133,7 +134,7 @@ for n in range(nepisodes + 1):
         elif state == 0:
             reward = reward_normal
 
-            a1 = explore_exploit(x, y, Q)
+            a1 = explore_exploit(x1, y1, Q)
             if x1 == 0 and y1 == nrows:
                 Qs1a1 = 0.0
             else:
@@ -167,13 +168,13 @@ while True:
     a = exploit(x, y, Q)
     print(x, y, a)
     x1, y1, state = move(x, y, a)
-    if state == 1 or state == 1:
+    if state == 1 or state == 2:
         print("breaking ", state)
         break
     elif state == 0:
         x = x1
         y = y1
-        if x >= 0 and x <= ncols - 1 and y > -0 and y < nrows - 1:
+        if 0 <= x <= ncols - 1 and 0 <= y <= nrows - 1:
             path[x, y] = 100.0
-    plt.imshow(path)
-    plt.savefig('path_sarsa.png')
+plt.imshow(path)
+plt.savefig('path_sarsa.png')
