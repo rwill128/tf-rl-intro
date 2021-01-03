@@ -108,6 +108,7 @@ def explore_exploit(x, y, Q):
         a = exploit(x, y, Q)
     return a
 
+
 for n in range(nepisodes + 1):
     if n % 1000 == 0:
         print("episodes #: ", n)
@@ -116,5 +117,5 @@ for n in range(nepisodes + 1):
 
     a = explore_exploit(x, y, Q)
 
-    while(True):
+    while (True):
         x1, y1, state = move(x, y, Q)
