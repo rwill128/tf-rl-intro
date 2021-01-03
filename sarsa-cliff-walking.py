@@ -84,5 +84,37 @@ def exploit(x, y, Q):
     a = np.argmax(Q[y, x, :])
     return a
 
+
 def bellman(x, y, a, reward, Qs1a1, Q):
     if y == nrows and x == 0:
+        return Q
+
+    if y == nrows and x == ncols - 1:
+        return Q
+
+    Q[y, x, a] = Q[y, x, a] + alpha * (reward + gamma * Qs1a1 - Q[y, x, a])
+
+
+def explore_exploit(x, y, Q):
+    if x == 0 and y == nrows:
+        a = 0
+        return a
+
+    r = np.random.uniform()
+
+    if r < epsilon:
+        a = random_action()
+    else:
+        a = exploit(x, y, Q)
+    return a
+
+for n in range(nepisodes + 1):
+    if n % 1000 == 0:
+        print("episodes #: ", n)
+
+    x, y = go_to_start()
+
+    a = explore_exploit(x, y, Q)
+
+    while(True):
+        x1, y1, state = move(x, y, Q)
